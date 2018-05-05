@@ -2,18 +2,11 @@ package filmsAnalyzer;
 
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws ParseException {
-        final String database = "resources/movies_db.csv";
-        double min = 237000000;
-        double max = 237000000;
-        Map<Long,String> genres = new HashMap<>();
-        long key = 28l;
+        final String database = "resources/tiny.csv";
         FilmsAnalyzer filmsAnalizer = null;
 
         // Ejercicio 1
@@ -25,25 +18,26 @@ public class Main {
         //filmsAnalizer.printFilms();
 
         // Ejercicio 2
-        //filmsAnalizer.maxMin(min,max);
+        //filmsAnalizer.maxMin(237000000,237000000);
 
         //Ejercicio 3
-        genres.put(28L,"Action");
-        genres.put(12L,"Adventure");
-        genres.put(14L,"Factasy");
-        genres.put(878L,"Science Fiction");
-        //filmsAnalizer.filmsWithGenres(genres);
+        //filmsAnalizer.filmsWithGenres(new HashSet<>(Arrays.asList("Action","Adventure")));
 
         //Ejercicio 4
-        filmsAnalizer.getMaxRevenueFromKey(key);
+        //filmsAnalizer.getMaxRevenueFromKeyword("culture clash");
 
         //Ejercicio 5
+        //List<Film> ejercicio5 = filmsAnalizer.getListWithLanguagePopularity("es",0);
 
         //Ejercicio 6
+        //long yearRevenue = filmsAnalizer.getYearRevenue("2009");
 
         //Ejercicio 7
+//        int votes = filmsAnalizer.getVotes(1f,2f);
+//        System.out.println(votes);
 
         //Ejercicio 8
+        filmsAnalizer.getProductionAndFilms();
 
         System.out.println("Total peliculas: "+filmsAnalizer.getFilms().size());
     }
