@@ -1,12 +1,12 @@
 package filmsAnalyzer;
 
 import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws ParseException {
-        final String database = "resources/tiny.csv";
+        final String database = "resources/movies_db.csv";
         FilmsAnalyzer filmsAnalizer = null;
 
         // Ejercicio 1
@@ -30,15 +30,16 @@ public class Main {
         //List<Film> ejercicio5 = filmsAnalizer.getListWithLanguagePopularity("es",0);
 
         //Ejercicio 6
-        //long yearRevenue = filmsAnalizer.getYearRevenue("2009");
+//        long yearRevenue = filmsAnalizer.getYearRevenue("2009");
+//        System.out.println(yearRevenue);
 
         //Ejercicio 7
-//        int votes = filmsAnalizer.getVotes(1f,2f);
+//        int votes = filmsAnalizer.getVotes(1f, 2f);
 //        System.out.println(votes);
 
         //Ejercicio 8
-        filmsAnalizer.getProductionAndFilms();
+//        filmsAnalizer.getProductionAndFilms().forEach((k, v) -> System.out.println(k + " : " + v));
 
-        System.out.println("Total peliculas: "+filmsAnalizer.getFilms().size());
+        System.out.println("Total peliculas: " + filmsAnalizer.getFilms().size());
     }
 }

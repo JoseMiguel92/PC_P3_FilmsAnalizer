@@ -1,5 +1,6 @@
 package filmsAnalyzer;
 
+import com.sun.deploy.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,9 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FilmsAnalyzer {
     private List<Film> films;
@@ -56,19 +55,17 @@ public class FilmsAnalyzer {
 
     public Set<String> getSet(String json) throws ParseException {
         String jsonReplaced = json.replaceAll("\"\"", "\"");
-        String jsonString = jsonReplaced.substring(1, jsonReplaced.length() - 1);
+        String jsonSubString = jsonReplaced.substring(1, jsonReplaced.length() - 1);
         Set<String> setJson = new HashSet<>();
         JSONParser parser = new JSONParser();
-        try {
-            JSONArray array = (JSONArray) parser.parse(jsonString);
+        if(!jsonSubString.equals("[]") || !jsonSubString.equals("")){
+            JSONArray array = (JSONArray) parser.parse(jsonSubString);
             for (Object o : array) {
                 JSONObject jsonObject = (JSONObject) o;
                 setJson.add((String) jsonObject.get("name"));
             }
-        } catch (ParseException e) {
-        } finally {
-            return setJson;
         }
+        return setJson;
     }
 
     public List<Film> getFilms() {
@@ -118,6 +115,7 @@ public class FilmsAnalyzer {
         return this.films.parallelStream()
                 .filter(film -> film.getRelease_date().contains(year))
                 .map(film -> film.getRevenue())
+//                .reduce(Long::sum).orElse(-1l);
                 .reduce(0l, (x, y) -> x + y);
     }
 
@@ -131,23 +129,11 @@ public class FilmsAnalyzer {
     }
 
     //Ej8
-    public void getProductionAndFilms(){
-        Map<String, Set<String>> result = new HashMap<>();
-        films.parallelStream()
-                .flatMap(x-> x.getProduction_companies()
-                        .stream().map(y -> y + ":" + x.getOriginal_title())
-                        ).forEach(System.out::println);
-
-
-
-        films.parallelStream()
-                .flatMap(f->f.getProduction_companies().stream())
-                .collect(Collectors.groupingBy(,Collectors.mapping(Film::getOriginal_title,Collectors.toSet())));
-//
-//        films.parallelStream()
-//                .flatMap(x-> x.getProduction_companies()
-//                        .stream())
-//                .map(y->Collectors.toMap(Collectors.mapping(Function.identity(),Collectors.toSet())));
+    public Map<String, Set<String>> getProductionAndFilms(){
+        return films.parallelStream()
+                .flatMap(film-> film.getProduction_companies().stream()
+                        .map(company -> new AbstractMap.SimpleEntry<>(company,film.getOriginal_title())))
+                .collect(Collectors.groupingBy(AbstractMap.SimpleEntry::getKey,Collectors.mapping(AbstractMap.SimpleEntry::getValue,Collectors.toSet())));
     }
 
 }
